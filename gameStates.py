@@ -12,10 +12,12 @@ class States():
         self.quit = False
         self.previous = None
 
+
 class Menu(States):
     def __init__(self):
         States.__init__(self)
         self.next = 'game'
+
 
     def cleanup(self):
         print('cleaning up Menu state stuff')
@@ -24,21 +26,54 @@ class Menu(States):
         print('starting Menu state stuff')
 
     def get_event(self, event):
-        if event.type == pg.KEYDOWN:
-            print('Menu State keydown')
-        elif event.type == pg.MOUSEBUTTONDOWN:
+        if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
             self.done = True
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            #self.done = True
+            pass
+
+    def python_logo(self, screen):
+        pythonIcon = pg.image.load('pythonpower.png')
+        screen.blit(pythonIcon, (0, 0))
+
+    def title_text(self, screen):
+        font = pg.font.SysFont(None, 100)
+        text = font.render('Snake!', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2 - 200))
+        screen.blit(text, (text_rect))
+
+    def instruction_text(self, screen):
+        font = pg.font.SysFont(None, 60)
+        text = font.render('Press Space Bar to Play!', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y - 100))
+        screen.blit(text, (text_rect))
+
+    def controls_text(self, screen):
+        font = pg.font.SysFont(None, 30)
+        ctrl_text = ['w - Up', 'a - left', 's - down', 'd - right', 'p - pause']
+        for i in range(len(ctrl_text)):
+            text = font.render(ctrl_text[i], True, BLACK)
+            text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3 + i*50))
+            screen.blit(text, (text_rect))
+
+    def display_text(self, screen):
+        self.title_text(screen)
+        self.instruction_text(screen)
+        self.controls_text(screen)
 
     def update(self, screen, dt):
         self.draw(screen)
 
     def draw(self, screen):
-        screen.fill((255,0,0))
+        screen.fill((WHITE2))
+        self.display_text(screen)
+        self.python_logo(screen)
 
 class Pause(States):
     def __init__(self):
         States.__init__(self)
         self.next = 'game'
+
 
     def cleanup(self):
         print('cleaning up Pause state stuff')
@@ -55,39 +90,31 @@ class Pause(States):
         elif event.type == pg.MOUSEBUTTONDOWN:
             self.done = True
 
-    def update(self, screen, dt):
-        self.draw(screen)
+    def title_text(self, screen):
+        font = pg.font.SysFont(None, 100)
+        text = font.render('Paused', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
+        screen.blit(text, (text_rect))
 
-    def draw(self, screen):
-        screen.fill((128,128,128))
-'''
-class Game(States):
-    def __init__(self):
-        States.__init__(self)
-        self.next = 'menu'
+    def instruction_text(self, screen):
+        font = pg.font.SysFont(None, 30)
+        text = font.render('Press p to Unpause!', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3+100))
+        screen.blit(text, (text_rect))
 
+    def display_text(self, screen):
+        self.title_text(screen)
+        self.instruction_text(screen)
 
-    def cleanup(self):
-        print('cleaning up Game state stuff')
-
-    def startup(self):
-        print('starting Game state stuff')
-
-    def get_event(self, event):
-        if event.type == pg.KEYDOWN and event.key == pg.K_p:
-            print('Pause State keydown')
-            self.next = 'pause'
-            self.done = True
-        elif event.type == pg.KEYDOWN:    print('Game State keydown')
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            self.done = True
 
     def update(self, screen, dt):
         self.draw(screen)
 
     def draw(self, screen):
-        screen.fill((0,0,255))
-'''
+        screen.fill((WHITE2))
+        self.display_text(screen)
+
+
 class Control:
     def __init__(self, **settings):
         self.__dict__.update(settings)
@@ -128,21 +155,3 @@ class Control:
             self.event_loop()
             self.update(delta_time)
             pg.display.update()
-
-'''
-settings = {
-    'size': DISPLAYSURF,
-    'fps' : FPS
-}
-
-app = Control(**settings)
-state_dict = {
-    'menu': Menu(),
-    'game': Game(),
-    'pause': Pause()
-}
-app.setup_states(state_dict, 'menu')
-app.main_game_loop()
-pg.quit()
-sys.exit()
-'''

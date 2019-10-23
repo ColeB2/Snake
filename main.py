@@ -2,7 +2,7 @@
 main.py - main game file, runs the game
 '''
 from gameStates import *
-from snakeGameState import Game
+from mainGameState import Game
 
 if __name__ == '__main__':
     settings = {

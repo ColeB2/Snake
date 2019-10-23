@@ -1,74 +1,11 @@
 '''
-snakeGameState.py - Has the game state, and the snake objects to create the
-the game of Snake!
+snakeObject.py - Main class for snake and food objects
 '''
-'''GAMESTATE IMPORTS'''
-from gameStates import States
-import pygame as pg
-from pyVariables import *
-
-'''SNAKE/FOOD IMPORTS'''
 import math
+import pygame as pg
 from pygame.locals import *
+from pyVariables import *
 import random
-
-class Game(States):
-    def __init__(self):
-        States.__init__(self)
-        self.next = 'menu'
-        self.snake = Snake()
-        self.food = Food()
-
-
-    def play_game(self, screen):
-        self.snake.snake_move()
-        self.snake.eat(self.food, screen)
-        self.crashes()
-
-    def new_game(self):
-        self.snake = Snake()
-        self.snake.eaten = 0
-        self.snake.position = [[self.snake.x, self.snake.y],[self.snake.x-SCALE, self.snake.y],[self.snake.x-(2*SCALE), self.snake.y]]
-        self.snake.head = [self.snake.x, self.snake.y]
-        self.snake.pbd = self.snake.RIGHT
-        self.snake.bd = self.snake.RIGHT
-
-    def display_score(self, screen):
-        font = pg.font.SysFont(None, 40)
-        text = font.render('Score: ' + str(self.snake.eaten), True, BLACK)
-        screen.blit(text,(0,0))
-
-    def crashes(self):
-        if self.snake.crash() == True:
-            print('GAME OVER')
-            self.new_game()
-
-    def cleanup(self):
-        print('cleaning up Game state stuff')
-
-    def startup(self):
-        print('starting Game state stuff')
-
-    def get_event(self, event):
-        if event.type == pg.KEYDOWN and event.key == pg.K_p:
-            print('Pause State keydown')
-            self.next = 'pause'
-            self.done = True
-        elif event.type == pg.KEYDOWN:
-            print('Game State keydown')
-            self.snake.move(event)
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            self.done = True
-
-    def update(self, screen, dt):
-        self.draw(screen)
-        self.play_game(screen)
-
-    def draw(self, screen):
-        screen.fill((230,230,250))
-        self.snake.draw(screen)
-        self.food.draw(screen)
-        self.display_score(screen)
 
 '''SNAKE CLASS'''
 class Snake():
@@ -123,24 +60,6 @@ class Snake():
         else:
             self.bd = self.bd
 
-            '''
-
-        ##Code that makes the snake always moves in direction its told.
-        if self.bd == self.RIGHT:
-            self.head[0] += SCALE
-        elif self.bd == self.LEFT:
-            self.head[0] -= SCALE
-        elif self.bd == self.DOWN:
-            self.head[1] += SCALE
-        elif self.bd == self.UP:
-            self.head[1] -= SCALE
-        else:
-            pass
-        self.pbd = self.bd
-        ##snakes movement, by removing tail and adding another spot infront of the head.
-        self.position.insert(0, list(self.head))
-        self.position.pop()'''
-
     def crash(self):
         '''Ends the game if snake head goes off screen into boundry, or runs into itself'''
         if self.head[0] < 0 or self.head[0] > DIS_X or self.head[1] < 0 or self.head[1] > DIS_Y:
@@ -169,6 +88,7 @@ class Food():
         '''initialize x, y values of the 1st piece of food'''
         self.x = self.pick_location(DIS_X)
         self.y = self.pick_location(DIS_Y)
+
 
     def draw(self, screen):
         '''Draws the initial/starting piece of food on the screen'''
