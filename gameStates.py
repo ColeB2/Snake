@@ -33,8 +33,12 @@ class Menu(States):
             pass
 
     def python_logo(self, screen):
-        pythonIcon = pg.image.load('pythonpower.png')
-        screen.blit(pythonIcon, (0, 0))
+        pythonLogo = pg.image.load('python200x80a.png')
+        pygameLogo = pg.image.load('pygame250x100.png')
+        pythonL_rect = pythonLogo.get_rect(topleft=(PYTHON_RECT))
+        pygameL_rect = pythonLogo.get_rect(topleft=(PYGAME_RECT))
+        screen.blit(pythonLogo, (pythonL_rect))
+        screen.blit(pygameLogo, (pygameL_rect))
 
     def title_text(self, screen):
         font = pg.font.SysFont(None, 100)
@@ -45,7 +49,7 @@ class Menu(States):
     def instruction_text(self, screen):
         font = pg.font.SysFont(None, 60)
         text = font.render('Press Space Bar to Play!', True, BLACK)
-        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y - 100))
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2 + 50 ))
         screen.blit(text, (text_rect))
 
     def controls_text(self, screen):
@@ -53,7 +57,7 @@ class Menu(States):
         ctrl_text = ['w - Up', 'a - left', 's - down', 'd - right', 'p - pause']
         for i in range(len(ctrl_text)):
             text = font.render(ctrl_text[i], True, BLACK)
-            text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3 + i*50))
+            text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/4 + i*30))
             screen.blit(text, (text_rect))
 
     def display_text(self, screen):
@@ -80,6 +84,7 @@ class Pause(States):
 
     def startup(self):
         print('starting Pause state stuff')
+
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN and event.key == pg.K_p:
@@ -113,6 +118,44 @@ class Pause(States):
     def draw(self, screen):
         screen.fill((WHITE2))
         self.display_text(screen)
+
+class Game_Over(States):
+    def __init__(self):
+        States.__init__(self)
+        self.next = 'game'
+
+
+    def cleanup(self):
+        print('cleaning up Pause state stuff')
+
+    def startup(self):
+        print('starting Pause state stuff')
+
+    def get_event(self, event):
+        if event.type == pg.KEYDOWN:
+            self.next = 'game'
+            self.done = True
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            self.next = 'game'
+            self.done = True
+
+    def title_text(self, screen):
+        font = pg.font.SysFont(None, 100)
+        text = font.render('GAME OVER', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
+        screen.blit(text, (text_rect))
+
+    def display_text(self, screen):
+        self.title_text(screen)
+
+
+    def update(self, screen, dt):
+        self.draw(screen)
+
+    def draw(self, screen):
+        screen.fill((WHITE2))
+        self.display_text(screen)
+
 
 
 class Control:

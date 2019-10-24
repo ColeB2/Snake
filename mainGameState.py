@@ -22,7 +22,9 @@ class Game(States):
     def new_game(self):
         self.snake = Snake()
         self.snake.eaten = 0
-        self.snake.position = [[self.snake.x, self.snake.y],[self.snake.x-SCALE, self.snake.y],[self.snake.x-(2*SCALE), self.snake.y]]
+        self.snake.position = [[self.snake.x, self.snake.y],
+                               [self.snake.x-SCALE, self.snake.y],
+                               [self.snake.x-(2*SCALE), self.snake.y]]
         self.snake.head = [self.snake.x, self.snake.y]
         self.snake.pbd = self.snake.RIGHT
         self.snake.bd = self.snake.RIGHT
@@ -32,9 +34,16 @@ class Game(States):
         text = font.render('Score: ' + str(self.snake.eaten), True, BLACK)
         screen.blit(text,(0,0))
 
+    def display_gameover(self, screen):
+        font = pg.font.SysFont(None, 100)
+        text = font.render('GAME OVER!', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X, DIS_Y))
+        screen.blit(text,(text_rect))
+
     def crashes(self):
         if self.snake.crash() == True:
-            print('GAME OVER')
+            self.next = 'gameover'
+            self.done = True
             self.new_game()
 
     def cleanup(self):
@@ -45,11 +54,9 @@ class Game(States):
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN and event.key == pg.K_p:
-            print('Pause State keydown')
             self.next = 'pause'
             self.done = True
         elif event.type == pg.KEYDOWN:
-            print('Game State keydown')
             self.snake.move(event)
         elif event.type == pg.MOUSEBUTTONDOWN:
             self.done = True

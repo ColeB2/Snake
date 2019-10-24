@@ -14,7 +14,8 @@ if __name__ == '__main__':
     state_dict = {
         'menu': Menu(),
         'game': Game(),
-        'pause': Pause()
+        'pause': Pause(),
+        'gameover': Game_Over()
     }
     app.setup_states(state_dict, 'menu')
     app.main_game_loop()
