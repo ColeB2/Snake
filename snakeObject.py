@@ -1,5 +1,6 @@
 '''
 snakeObject.py - Main class for snake and food objects
+##TODO -- implement random choice - snake position for food location
 '''
 import math
 import pygame as pg
@@ -7,9 +8,10 @@ from pygame.locals import *
 from pyVariables import *
 import random
 
+
 '''SNAKE CLASS'''
 class Snake():
-    def __init__(self, x=(2*SCALE), y=(2*SCALE)):
+    def __init__(self, x=START_X, y=START_Y):
         self.x = x
         self.y = y
         self.eaten = 0
@@ -23,6 +25,7 @@ class Snake():
         self.LEFT = 'left'
         self.previous_direction = self.RIGHT
         self.direction = self.RIGHT
+        self.color = SNAKE_COLOR
 
 
     def snake_move(self):
@@ -59,8 +62,8 @@ class Snake():
 
     def crash(self):
         '''Checks to see if the snake has crashed'''
-        if self.head[0] < 0 or self.head[0] > DIS_X or self.head[1] < 0 or \
-            self.head[1] > DIS_Y:
+        if self.head[0] < LEFT_BOUND_X or self.head[0] > RIGHT_BOUND_X or \
+           self.head[1] < TOP_BOUND_Y  or self.head[1] > BOTTOM_BOUND_Y:
             return True
         elif [self.head[0],self.head[1]] in self.position[2:]:
             return True
@@ -69,7 +72,7 @@ class Snake():
 
     def draw(self, screen):
         for position in self.position:
-            pg.draw.rect(screen, SNAKE_COLOR,
+            pg.draw.rect(screen, self.color,
                         (position[0], position[1],SCALE-1,SCALE-1))
 
     def eat(self, apple_pos, screen):
@@ -79,36 +82,41 @@ class Snake():
         '''
         if self.head[0] == apple_pos.x and self.head[1] == apple_pos.y:
             self.eaten += 1
-            apple_pos.new_food(screen)
+            apple_pos.new_food(screen, self.position)
             '''add new piece to head'''
             self.position.insert(0, list(self.head))
+
+            for i in range(3):
+                self.y = -50 #So that GREEN square doesn't appear on screen
+                self.position.append([self.x - (len(self.position)+1 * SCALE),
+                                      self.y - (len(self.position)+1 * SCALE)])
             return True
 
 
 class Food():
     def __init__(self):
         '''initialize x, y values of the 1st piece of food'''
-        self.x = self.pick_location(DIS_X)
-        self.y = self.pick_location(DIS_Y)
+        self.x = self.pick_location(RIGHT_BOUND_X)
+        self.y = self.pick_location(BOTTOM_BOUND_Y)
 
 
     def draw(self, screen):
         '''Draws the initial/starting piece of food on the screen'''
         pg.draw.rect(screen, FOOD_COLOR, (self.x, self.y,SCALE,SCALE))
 
-    def pick_location(self, size):
+    def pick_location(self, boundary):
         '''
         Size: Size of screen, to pick a value x,y that fits inside of the
         size of screen
         '''
-        value = random.randint(SCALE, (size-SCALE))
+        value = random.randint(TL_COORD, (boundary-TL_COORD))
         return math.floor((value/SCALE))*SCALE
 
-    def new_food(self, screen):
+    def new_food(self, screen, snake_location):
         '''
         Resets the x, y values for the food, and draws new piece of food on
         screen
         '''
-        self.x = self.pick_location(DIS_X)
-        self.y = self.pick_location(DIS_Y)
+        self.x = self.pick_location(RIGHT_BOUND_X)
+        self.y = self.pick_location(BOTTOM_BOUND_Y)
         self.draw(screen)

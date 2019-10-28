@@ -20,14 +20,18 @@ class Game(States):
 
 
     def new_game(self):
-        self.snake = Snake()
+        #self.snake = Snake()
+        self.snake.x, self.snake.y = START_X, START_Y
+        self.snake.color = SNAKE_COLOR
         self.snake.eaten = 0
         self.snake.position = [[self.snake.x, self.snake.y],
                                [self.snake.x-SCALE, self.snake.y],
                                [self.snake.x-(2*SCALE), self.snake.y]]
         self.snake.head = [self.snake.x, self.snake.y]
-        self.snake.pbd = self.snake.RIGHT
-        self.snake.bd = self.snake.RIGHT
+        self.snake.previous_direction = self.snake.RIGHT
+        self.snake.direction = self.snake.RIGHT
+        self.food.x = self.food.pick_location(DIS_X)
+        self.food.y = self.food.pick_location(DIS_Y)
 
     def display_score(self, screen):
         font = pg.font.SysFont(None, 40)
@@ -42,9 +46,14 @@ class Game(States):
 
     def crashes(self):
         if self.snake.crash() == True:
+            self.snake.color = BLACK
             self.next = 'gameover'
             self.done = True
             self.new_game()
+
+    def draw_background(self, screen):
+        pg.draw.rect(screen, WHITE2, (BACKGROUND))
+
 
     def cleanup(self):
         print('cleaning up Game state stuff')
@@ -68,7 +77,8 @@ class Game(States):
         self.crashes()
 
     def draw(self, screen):
-        screen.fill((WHITE2))
+        screen.fill((GRAY))
+        self.draw_background(screen)
         self.snake.draw(screen)
         self.food.draw(screen)
         self.display_score(screen)

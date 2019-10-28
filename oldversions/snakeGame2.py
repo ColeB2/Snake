@@ -112,7 +112,8 @@ class Snake():
 
     def crash(self):
         '''Ends the game if snake head goes off screen into boundry, or runs into itself'''
-        if self.head[0] < 0 or self.head[0] > DIS_X or self.head[1] < 0 or self.head[1] > DIS_Y:
+        if self.head[0] < 0 or self.head[0] > DIS_X or  \
+           self.head[1] < 0 or self.head[1] > DIS_Y:
             return True
         elif [self.head[0],self.head[1]] in self.position[2:]:
             return True

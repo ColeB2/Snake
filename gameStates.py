@@ -29,7 +29,6 @@ class Menu(States):
         if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
             self.done = True
         elif event.type == pg.MOUSEBUTTONDOWN:
-            #self.done = True
             pass
 
     def python_logo(self, screen):
@@ -91,9 +90,8 @@ class Pause(States):
             self.next = 'game'
             self.done = True
         elif event.type == pg.KEYDOWN:
+            pass
             print('Pause State keydown')
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            self.done = True
 
     def title_text(self, screen):
         font = pg.font.SysFont(None, 100)
@@ -133,9 +131,6 @@ class Game_Over(States):
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
-            self.next = 'game'
-            self.done = True
-        elif event.type == pg.MOUSEBUTTONDOWN:
             self.next = 'game'
             self.done = True
 
