@@ -94,6 +94,7 @@ class Pause(States):
             print('Pause State keydown')
 
     def title_text(self, screen):
+        pg.draw.rect(screen, WHITE2, PAUSE_RECT)
         font = pg.font.SysFont(None, 100)
         text = font.render('Paused', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
@@ -114,7 +115,7 @@ class Pause(States):
         self.draw(screen)
 
     def draw(self, screen):
-        screen.fill((WHITE2))
+        #screen.fill((WHITE2))
         self.display_text(screen)
 
 class Game_Over(States):
@@ -135,20 +136,29 @@ class Game_Over(States):
             self.done = True
 
     def title_text(self, screen):
+        pg.draw.rect(screen, WHITE2, (GAMEOVER_RECT))
         font = pg.font.SysFont(None, 100)
         text = font.render('GAME OVER', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
         screen.blit(text, (text_rect))
 
+    def instruction_text(self, screen):
+        font = pg.font.SysFont(None, 60)
+        text = font.render('Press Space to Restart', True, BLACK)
+        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2))
+        screen.blit(text, text_rect)
+
+
+
     def display_text(self, screen):
         self.title_text(screen)
-
+        self.instruction_text(screen)
 
     def update(self, screen, dt):
         self.draw(screen)
 
     def draw(self, screen):
-        screen.fill((WHITE2))
+        #screen.fill((WHITE2))
         self.display_text(screen)
 
 

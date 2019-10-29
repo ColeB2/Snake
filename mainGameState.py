@@ -30,13 +30,13 @@ class Game(States):
         self.snake.head = [self.snake.x, self.snake.y]
         self.snake.previous_direction = self.snake.RIGHT
         self.snake.direction = self.snake.RIGHT
-        self.food.x = self.food.pick_location(DIS_X)
-        self.food.y = self.food.pick_location(DIS_Y)
+        self.food.first_food()
 
     def display_score(self, screen):
         font = pg.font.SysFont(None, 40)
         text = font.render('Score: ' + str(self.snake.eaten), True, BLACK)
-        screen.blit(text,(0,0))
+        text_rect = text.get_rect(bottomleft=(BACK_X,BACK_Y) )
+        screen.blit(text,(text_rect))
 
     def display_gameover(self, screen):
         font = pg.font.SysFont(None, 100)

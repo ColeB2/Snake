@@ -1,6 +1,5 @@
 '''
 snakeObject.py - Main class for snake and food objects
-##TODO -- implement random choice - snake position for food location
 '''
 import math
 import pygame as pg
@@ -82,41 +81,48 @@ class Snake():
         '''
         if self.head[0] == apple_pos.x and self.head[1] == apple_pos.y:
             self.eaten += 1
-            apple_pos.new_food(screen, self.position)
             '''add new piece to head'''
             self.position.insert(0, list(self.head))
-
+            '''adds 3 pieces to tail'''
             for i in range(3):
                 self.y = -50 #So that GREEN square doesn't appear on screen
                 self.position.append([self.x - (len(self.position)+1 * SCALE),
                                       self.y - (len(self.position)+1 * SCALE)])
+            apple_pos.new_food(screen, self.position)
             return True
 
 
 class Food():
     def __init__(self):
         '''initialize x, y values of the 1st piece of food'''
-        self.x = self.pick_location(RIGHT_BOUND_X)
-        self.y = self.pick_location(BOTTOM_BOUND_Y)
+        self.x = int()
+        self.y = int()
+        self.first_food()
+        self.possible_food_location = []
+
 
 
     def draw(self, screen):
         '''Draws the initial/starting piece of food on the screen'''
-        pg.draw.rect(screen, FOOD_COLOR, (self.x, self.y,SCALE,SCALE))
-
-    def pick_location(self, boundary):
-        '''
-        Size: Size of screen, to pick a value x,y that fits inside of the
-        size of screen
-        '''
-        value = random.randint(TL_COORD, (boundary-TL_COORD))
-        return math.floor((value/SCALE))*SCALE
+        pg.draw.rect(screen, FOOD_COLOR, (self.x, self.y,SCALE-1,SCALE-1))
 
     def new_food(self, screen, snake_location):
-        '''
-        Resets the x, y values for the food, and draws new piece of food on
-        screen
-        '''
-        self.x = self.pick_location(RIGHT_BOUND_X)
-        self.y = self.pick_location(BOTTOM_BOUND_Y)
+        '''Sets x, y of food based on open board locations'''
+        self.calculate_possible_location(snake_location)
+        self.x, self.y = random.choice(self.possible_food_location)
         self.draw(screen)
+
+    def first_food(self):
+        '''Create random location for the 1st food, away from top left corner'''
+        x = random.randint((LEFT_BOUND_X + (6*SCALE)), RIGHT_BOUND_X)
+        y = random.randint((TOP_BOUND_Y + (6*SCALE)), BOTTOM_BOUND_Y)
+        self.x = math.floor((x/SCALE)) * SCALE
+        self.y = math.floor((y/SCALE)) * SCALE
+
+    def calculate_possible_location(self, snake_location):
+        '''Calcualate board locations that doesn't contain the snake'''
+        self.possible_food_location = []
+        for i in range(LEFT_BOUND_X, RIGHT_BOUND_X, SCALE):
+            for j in range(TOP_BOUND_Y, BOTTOM_BOUND_Y, SCALE):
+                if [i,j] not in snake_location:
+                    self.possible_food_location.append([i,j])
