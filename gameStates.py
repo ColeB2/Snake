@@ -90,7 +90,6 @@ class Pause(States):
             self.next = 'game'
             self.done = True
         elif event.type == pg.KEYDOWN:
-            pass
             print('Pause State keydown')
 
     def title_text(self, screen):
@@ -115,7 +114,6 @@ class Pause(States):
         self.draw(screen)
 
     def draw(self, screen):
-        #screen.fill((WHITE2))
         self.display_text(screen)
 
 class Game_Over(States):
@@ -144,7 +142,7 @@ class Game_Over(States):
 
     def instruction_text(self, screen):
         font = pg.font.SysFont(None, 60)
-        text = font.render('Press Space to Restart', True, BLACK)
+        text = font.render('Press any key to Restart', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2))
         screen.blit(text, text_rect)
 
@@ -158,7 +156,6 @@ class Game_Over(States):
         self.draw(screen)
 
     def draw(self, screen):
-        #screen.fill((WHITE2))
         self.display_text(screen)
 
 

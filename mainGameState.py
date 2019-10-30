@@ -17,6 +17,7 @@ class Game(States):
         self.next = 'menu'
         self.snake = Snake()
         self.food = Food()
+        self.high_score = self.snake.eaten
 
 
     def new_game(self):
@@ -36,7 +37,20 @@ class Game(States):
         font = pg.font.SysFont(None, 40)
         text = font.render('Score: ' + str(self.snake.eaten), True, BLACK)
         text_rect = text.get_rect(bottomleft=(BACK_X,BACK_Y) )
-        screen.blit(text,(text_rect))
+        screen.blit(text, text_rect)
+
+    def calculate_high_score(self):
+        if self.snake.eaten > self.high_score:
+            self.high_score = self.snake.eaten
+        elif self.high_score > self.snake.eaten:
+            self.high_score = self.high_score
+
+    def display_high_score(self, screen):
+        self.calculate_high_score()
+        font = pg.font.SysFont(None, 40)
+        text = font.render('High Score: ' + str(self.high_score), True, BLACK)
+        text_rect = text.get_rect(bottomright=(RIGHT_BOUND_X, BACK_Y))
+        screen.blit(text, text_rect)
 
     def display_gameover(self, screen):
         font = pg.font.SysFont(None, 100)
@@ -67,8 +81,6 @@ class Game(States):
             self.done = True
         elif event.type == pg.KEYDOWN:
             self.snake.move(event)
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            self.done = True
 
     def update(self, screen, dt):
         self.draw(screen)
@@ -82,3 +94,4 @@ class Game(States):
         self.snake.draw(screen)
         self.food.draw(screen)
         self.display_score(screen)
+        self.display_high_score(screen)
