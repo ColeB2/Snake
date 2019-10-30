@@ -21,7 +21,6 @@ class Game(States):
 
 
     def new_game(self):
-        #self.snake = Snake()
         self.snake.x, self.snake.y = START_X, START_Y
         self.snake.color = SNAKE_COLOR
         self.snake.eaten = 0
@@ -34,9 +33,16 @@ class Game(States):
         self.food.first_food()
 
     def display_score(self, screen):
-        font = pg.font.SysFont(None, 40)
-        text = font.render('Score: ' + str(self.snake.eaten), True, BLACK)
-        text_rect = text.get_rect(bottomleft=(BACK_X,BACK_Y) )
+        font = pg.font.Font('pixel.ttf', 40)
+        text = font.render('Score: ' + str(self.snake.eaten), True, RED)
+        text_rect = text.get_rect(topleft=(SCORE_X,SCORE_Y) )
+        screen.blit(text, text_rect)
+
+    def title_text(self, screen):
+        font_size = 100
+        font = pg.font.Font('mini.ttf', font_size)
+        text = font.render('Snake!', True, SNAKE_GREEN)
+        text_rect = text.get_rect(midtop=(DIS_X/2, 60-font_size))
         screen.blit(text, text_rect)
 
     def calculate_high_score(self):
@@ -45,18 +51,24 @@ class Game(States):
         elif self.high_score > self.snake.eaten:
             self.high_score = self.high_score
 
-    def display_high_score(self, screen):
-        self.calculate_high_score()
-        font = pg.font.SysFont(None, 40)
-        text = font.render('High Score: ' + str(self.high_score), True, BLACK)
-        text_rect = text.get_rect(bottomright=(RIGHT_BOUND_X, BACK_Y))
+    def controls(self, screen):
+        font = pg.font.Font('pixel.ttf', 40)
+        text = font.render('p to Pause', True, BLACK)
+        text_rect = text.get_rect(midtop=(DIS_X/2, SCORE_Y))
         screen.blit(text, text_rect)
 
-    def display_gameover(self, screen):
-        font = pg.font.SysFont(None, 100)
-        text = font.render('GAME OVER!', True, BLACK)
-        text_rect = text.get_rect(center=(DIS_X, DIS_Y))
-        screen.blit(text,(text_rect))
+    def display_high_score(self, screen):
+        self.calculate_high_score()
+        font = pg.font.Font('pixel.ttf', 40)
+        text = font.render('High Score: ' + str(self.high_score), True, YELLOW)
+        text_rect = text.get_rect(topright=(HSCORE_X, HSCORE_Y))
+        screen.blit(text, text_rect)
+
+    def display_all_text(self, screen):
+        self.display_score(screen)
+        self.display_high_score(screen)
+        self.title_text(screen)
+        self.controls(screen)
 
     def crashes(self):
         if self.snake.crash() == True:
@@ -67,7 +79,6 @@ class Game(States):
 
     def draw_background(self, screen):
         pg.draw.rect(screen, WHITE2, (BACKGROUND))
-
 
     def cleanup(self):
         print('cleaning up Game state stuff')
@@ -93,5 +104,4 @@ class Game(States):
         self.draw_background(screen)
         self.snake.draw(screen)
         self.food.draw(screen)
-        self.display_score(screen)
-        self.display_high_score(screen)
+        self.display_all_text(screen)

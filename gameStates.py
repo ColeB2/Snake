@@ -39,20 +39,28 @@ class Menu(States):
         screen.blit(pythonLogo, (pythonL_rect))
         screen.blit(pygameLogo, (pygameL_rect))
 
+    def credit(self,screen):
+        font = pg.font.Font('pixeltitle.ttf', 15)
+        text = font.render(
+        'Created by Cole B..........Fonts by KenneyNL Website: kenney.nl',
+                   True, BLACK)
+        text_rect = text.get_rect(bottomleft=(0, DIS_Y))
+        screen.blit(text, text_rect)
+
     def title_text(self, screen):
-        font = pg.font.SysFont(None, 100)
-        text = font.render('Snake!', True, BLACK)
-        text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2 - 200))
-        screen.blit(text, (text_rect))
+        font = pg.font.Font('block.ttf', 100)
+        text = font.render('SNAKE!', True, SNAKE_GREEN)
+        text_rect = text.get_rect(midtop=(DIS_X/2, 0-SCALE))
+        screen.blit(text, text_rect)
 
     def instruction_text(self, screen):
-        font = pg.font.SysFont(None, 60)
+        font = pg.font.Font('pixel.ttf', 60)
         text = font.render('Press Space Bar to Play!', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2 + 50 ))
         screen.blit(text, (text_rect))
 
     def controls_text(self, screen):
-        font = pg.font.SysFont(None, 30)
+        font = pg.font.Font('pixel.ttf', 50)
         ctrl_text = ['w - Up', 'a - left', 's - down', 'd - right', 'p - pause']
         for i in range(len(ctrl_text)):
             text = font.render(ctrl_text[i], True, BLACK)
@@ -63,6 +71,7 @@ class Menu(States):
         self.title_text(screen)
         self.instruction_text(screen)
         self.controls_text(screen)
+        self.credit(screen)
 
     def update(self, screen, dt):
         self.draw(screen)
@@ -94,13 +103,13 @@ class Pause(States):
 
     def title_text(self, screen):
         pg.draw.rect(screen, WHITE2, PAUSE_RECT)
-        font = pg.font.SysFont(None, 100)
+        font = pg.font.Font('pixel.ttf', 100)
         text = font.render('Paused', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
         screen.blit(text, (text_rect))
 
     def instruction_text(self, screen):
-        font = pg.font.SysFont(None, 30)
+        font = pg.font.Font('pixel.ttf', 30)
         text = font.render('Press p to Unpause!', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3+100))
         screen.blit(text, (text_rect))
@@ -129,21 +138,30 @@ class Game_Over(States):
         print('starting Pause state stuff')
 
     def get_event(self, event):
-        if event.type == pg.KEYDOWN:
+        if event.type == pg.KEYDOWN and event.key == pg.K_h:
+            self.next = 'menu'
+            self.done = True
+        elif event.type == pg.KEYDOWN:
             self.next = 'game'
             self.done = True
 
     def title_text(self, screen):
         pg.draw.rect(screen, WHITE2, (GAMEOVER_RECT))
-        font = pg.font.SysFont(None, 100)
+        font = pg.font.Font('pixel.ttf', 100)
         text = font.render('GAME OVER', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
         screen.blit(text, (text_rect))
 
     def instruction_text(self, screen):
-        font = pg.font.SysFont(None, 60)
+        font = pg.font.Font('pixel.ttf', 60)
         text = font.render('Press any key to Restart', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2))
+        screen.blit(text, text_rect)
+
+    def home_text(self, screen):
+        font = pg.font.Font('pixel.ttf', 60)
+        text = font.render('Press h to return Home', True, BLACK)
+        text_rect = text.get_rect(center = (DIS_X/2, DIS_Y/2 + 100))
         screen.blit(text, text_rect)
 
 
@@ -151,6 +169,7 @@ class Game_Over(States):
     def display_text(self, screen):
         self.title_text(screen)
         self.instruction_text(screen)
+        self.home_text(screen)
 
     def update(self, screen, dt):
         self.draw(screen)
