@@ -90,6 +90,14 @@ class Game(States):
         if event.type == pg.KEYDOWN and event.key == pg.K_p:
             self.next = 'pause'
             self.done = True
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused != True:
+            pg.mixer.music.pause()
+            self.music_paused = True
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused == True:
+            pg.mixer.music.unpause()
+            self.music_paused = False
         elif event.type == pg.KEYDOWN:
             self.snake.move(event)
 

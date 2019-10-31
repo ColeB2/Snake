@@ -11,6 +11,7 @@ class States():
         self.next = None
         self.quit = False
         self.previous = None
+        self.music_paused = False
 
 
 class Menu(States):
@@ -30,6 +31,15 @@ class Menu(States):
             self.done = True
         elif event.type == pg.MOUSEBUTTONDOWN:
             pass
+
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused != True:
+            pg.mixer.music.pause()
+            self.music_paused = True
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused == True:
+            pg.mixer.music.unpause()
+            self.music_paused = False
 
     def python_logo(self, screen):
         pythonLogo = pg.image.load('python200x80a.png')
@@ -61,7 +71,8 @@ class Menu(States):
 
     def controls_text(self, screen):
         font = pg.font.Font('pixel.ttf', 50)
-        ctrl_text = ['w - Up', 'a - left', 's - down', 'd - right', 'p - pause']
+        ctrl_text = ['w - Up', 'a - left', 's - down', 'd - right',
+                     'p - pause', 'm - mute music']
         for i in range(len(ctrl_text)):
             text = font.render(ctrl_text[i], True, BLACK)
             text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/4 + i*30))
@@ -100,6 +111,15 @@ class Pause(States):
             self.done = True
         elif event.type == pg.KEYDOWN:
             print('Pause State keydown')
+
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused != True:
+            pg.mixer.music.pause()
+            self.music_paused = True
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused == True:
+            pg.mixer.music.unpause()
+            self.music_paused = False
 
     def title_text(self, screen):
         pg.draw.rect(screen, WHITE2, PAUSE_RECT)
@@ -141,9 +161,18 @@ class Game_Over(States):
         if event.type == pg.KEYDOWN and event.key == pg.K_h:
             self.next = 'menu'
             self.done = True
-        elif event.type == pg.KEYDOWN:
+        elif event.type == pg.KEYDOWN and event.key != pg.K_m:
             self.next = 'game'
             self.done = True
+
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused != True:
+            pg.mixer.music.pause()
+            self.music_paused = True
+        elif event.type == pg.KEYDOWN and event.key == pg.K_m and \
+         self.music_paused == True:
+            pg.mixer.music.unpause()
+            self.music_paused = False
 
     def title_text(self, screen):
         pg.draw.rect(screen, WHITE2, (GAMEOVER_RECT))
@@ -185,6 +214,7 @@ class Control:
         self.done = False
         self.screen = pg.display.set_mode(self.size)
         self.clock = pg.time.Clock()
+        pg.mixer.music.load('game1.ogg')
 
 
     def setup_states(self, state_dict, start_state):
@@ -200,6 +230,9 @@ class Control:
         self.state.startup()
         self.state.previous = previous
 
+    def play_music(self):
+        pg.mixer.music.play(loops=1000)
+
     def update(self, dt):
         if self.state.quit:
             self.done = True
@@ -214,6 +247,7 @@ class Control:
             self.state.get_event(event)
 
     def main_game_loop(self):
+        self.play_music()
         while not self.done:
             delta_time = self.clock.tick(self.fps)/1000.0
             self.event_loop()

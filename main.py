@@ -17,6 +17,7 @@ if __name__ == '__main__':
         'pause': Pause(),
         'gameover': Game_Over()
     }
+
     app.setup_states(state_dict, 'menu')
     app.main_game_loop()
     pg.quit()
