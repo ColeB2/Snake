@@ -3,6 +3,7 @@ snakeGameState.py - Has the game state, and the snake objects to create the
 the game of Snake!
 '''
 '''GAMESTATE IMPORTS'''
+from assets.pyAssets import *
 from gameStates import States
 import pygame as pg
 from pyVariables import *
@@ -33,14 +34,14 @@ class Game(States):
         self.food.first_food()
 
     def display_score(self, screen):
-        font = pg.font.Font('pixel.ttf', 40)
+        font = pg.font.Font(PIXEL_FONT, 40)
         text = font.render('Score: ' + str(self.snake.eaten), True, RED)
         text_rect = text.get_rect(topleft=(SCORE_X,SCORE_Y) )
         screen.blit(text, text_rect)
 
     def title_text(self, screen):
         font_size = 100
-        font = pg.font.Font('mini.ttf', font_size)
+        font = pg.font.Font(MINI_FONT, font_size)
         text = font.render('Snake!', True, SNAKE_GREEN)
         text_rect = text.get_rect(midtop=(DIS_X/2, 60-font_size))
         screen.blit(text, text_rect)
@@ -52,14 +53,14 @@ class Game(States):
             self.high_score = self.high_score
 
     def controls(self, screen):
-        font = pg.font.Font('pixel.ttf', 40)
+        font = pg.font.Font(PIXEL_FONT, 40)
         text = font.render('p to Pause', True, BLACK)
         text_rect = text.get_rect(midtop=(DIS_X/2, SCORE_Y))
         screen.blit(text, text_rect)
 
     def display_high_score(self, screen):
         self.calculate_high_score()
-        font = pg.font.Font('pixel.ttf', 40)
+        font = pg.font.Font(PIXEL_FONT, 40)
         text = font.render('High Score: ' + str(self.high_score), True, YELLOW)
         text_rect = text.get_rect(topright=(HSCORE_X, HSCORE_Y))
         screen.blit(text, text_rect)

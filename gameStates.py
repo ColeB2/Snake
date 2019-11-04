@@ -1,6 +1,8 @@
 '''
 gameStates.py
 '''
+from assets.pyAssets import *
+import os
 import pygame as pg
 from pyVariables import *
 import sys
@@ -42,15 +44,15 @@ class Menu(States):
             self.music_paused = False
 
     def python_logo(self, screen):
-        pythonLogo = pg.image.load('python200x80a.png')
-        pygameLogo = pg.image.load('pygame250x100.png')
-        pythonL_rect = pythonLogo.get_rect(topleft=(PYTHON_RECT))
-        pygameL_rect = pythonLogo.get_rect(topleft=(PYGAME_RECT))
-        screen.blit(pythonLogo, (pythonL_rect))
-        screen.blit(pygameLogo, (pygameL_rect))
+        python_logo = pg.image.load(PYTHON_LOGO)
+        pygame_logo = pg.image.load(PYGAME_LOGO)
+        python_logo_rect = python_logo.get_rect(topleft=(PYTHON_RECT))
+        pygame_logo_rect = pygame_logo.get_rect(topleft=(PYGAME_RECT))
+        screen.blit(python_logo, (python_logo_rect))
+        screen.blit(pygame_logo, (pygame_logo_rect))
 
     def credit(self,screen):
-        font = pg.font.Font('pixeltitle.ttf', 15)
+        font = pg.font.Font(PIXEL_TITLE_FONT, 15)
         text = font.render(
         'Created by Cole B..........Fonts by KenneyNL Website: kenney.nl',
                    True, BLACK)
@@ -58,19 +60,19 @@ class Menu(States):
         screen.blit(text, text_rect)
 
     def title_text(self, screen):
-        font = pg.font.Font('block.ttf', 100)
+        font = pg.font.Font(BLOCK_FONT, 100)
         text = font.render('SNAKE!', True, SNAKE_GREEN)
         text_rect = text.get_rect(midtop=(DIS_X/2, 0-SCALE))
         screen.blit(text, text_rect)
 
     def instruction_text(self, screen):
-        font = pg.font.Font('pixel.ttf', 60)
+        font = pg.font.Font(PIXEL_FONT, 60)
         text = font.render('Press Space Bar to Play!', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2 + 50 ))
         screen.blit(text, (text_rect))
 
     def controls_text(self, screen):
-        font = pg.font.Font('pixel.ttf', 50)
+        font = pg.font.Font(PIXEL_FONT, 50)
         ctrl_text = ['w - Up', 'a - left', 's - down', 'd - right',
                      'p - pause', 'm - mute music']
         for i in range(len(ctrl_text)):
@@ -123,13 +125,13 @@ class Pause(States):
 
     def title_text(self, screen):
         pg.draw.rect(screen, WHITE2, PAUSE_RECT)
-        font = pg.font.Font('pixel.ttf', 100)
+        font = pg.font.Font(PIXEL_FONT, 100)
         text = font.render('Paused', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
         screen.blit(text, (text_rect))
 
     def instruction_text(self, screen):
-        font = pg.font.Font('pixel.ttf', 30)
+        font = pg.font.Font(PIXEL_FONT, 30)
         text = font.render('Press p to Unpause!', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3+100))
         screen.blit(text, (text_rect))
@@ -176,19 +178,19 @@ class Game_Over(States):
 
     def title_text(self, screen):
         pg.draw.rect(screen, WHITE2, (GAMEOVER_RECT))
-        font = pg.font.Font('pixel.ttf', 100)
+        font = pg.font.Font(PIXEL_FONT, 100)
         text = font.render('GAME OVER', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
         screen.blit(text, (text_rect))
 
     def instruction_text(self, screen):
-        font = pg.font.Font('pixel.ttf', 60)
+        font = pg.font.Font(PIXEL_FONT, 60)
         text = font.render('Press any key to Restart', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/2))
         screen.blit(text, text_rect)
 
     def home_text(self, screen):
-        font = pg.font.Font('pixel.ttf', 60)
+        font = pg.font.Font(PIXEL_FONT, 60)
         text = font.render('Press h to return Home', True, BLACK)
         text_rect = text.get_rect(center = (DIS_X/2, DIS_Y/2 + 100))
         screen.blit(text, text_rect)
@@ -214,7 +216,7 @@ class Control:
         self.done = False
         self.screen = pg.display.set_mode(self.size)
         self.clock = pg.time.Clock()
-        pg.mixer.music.load('game1.ogg')
+        pg.mixer.music.load(MUSIC)
 
 
     def setup_states(self, state_dict, start_state):
