@@ -2,13 +2,10 @@
 snakeGameState.py - Has the game state, and the snake objects to create the
 the game of Snake!
 '''
-'''GAMESTATE IMPORTS'''
 from assets.pyAssets import *
 from gameStates import States
 import pygame as pg
 from pyVariables import *
-
-'''SNAKE/FOOD IMPORT'''
 from snakeObject import *
 
 
@@ -79,7 +76,7 @@ class Game(States):
             self.new_game()
 
     def draw_background(self, screen):
-        pg.draw.rect(screen, WHITE2, (BACKGROUND))
+        pg.draw.rect(screen, LAVENDER_MIST, (BACKGROUND))
 
     def cleanup(self):
         print('cleaning up Game state stuff')

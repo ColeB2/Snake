@@ -90,7 +90,7 @@ class Menu(States):
         self.draw(screen)
 
     def draw(self, screen):
-        screen.fill((WHITE2))
+        screen.fill((LAVENDER_MIST))
         self.display_text(screen)
         self.python_logo(screen)
 
@@ -124,7 +124,7 @@ class Pause(States):
             self.music_paused = False
 
     def title_text(self, screen):
-        pg.draw.rect(screen, WHITE2, PAUSE_RECT)
+        pg.draw.rect(screen, LAVENDER_MIST, PAUSE_RECT)
         font = pg.font.Font(PIXEL_FONT, 100)
         text = font.render('Paused', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
@@ -177,7 +177,7 @@ class Game_Over(States):
             self.music_paused = False
 
     def title_text(self, screen):
-        pg.draw.rect(screen, WHITE2, (GAMEOVER_RECT))
+        pg.draw.rect(screen, LAVENDER_MIST, (GAMEOVER_RECT))
         font = pg.font.Font(PIXEL_FONT, 100)
         text = font.render('GAME OVER', True, BLACK)
         text_rect = text.get_rect(center=(DIS_X/2, DIS_Y/3))
