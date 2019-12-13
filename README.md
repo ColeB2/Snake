@@ -2,12 +2,12 @@
 A clone of classic game, Snake
 
 # Technologies
-Created with Python 3.6
-Utilizes Pygame 1.9.3
+Created with Python 3.6  
+Utilizes Pygame 1.9.3  
 Music recorded in audacity
 
 # Acknoledgements
-[Statemachine](https://python-forum.io/Thread-PyGame-Creating-a-state-machine)
+[Statemachine](https://python-forum.io/Thread-PyGame-Creating-a-state-machine)  
 [KenneyNL](https://www.kenney.nl/) - Fonts
 
 # License
