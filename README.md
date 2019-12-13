@@ -12,3 +12,6 @@ Music recorded in audacity
 
 # License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+# Game
+![Snake Game](https://github.com/ColeB2/Snake/blob/master/assets/game.png)
